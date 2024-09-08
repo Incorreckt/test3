@@ -1,0 +1,357 @@
+let gameCounter = 0;
+
+const gameArea = document.getElementById('game-area');
+
+// Tic-Tac-Toe
+function ticTacToe() {
+    gameArea.innerHTML = `
+        <h2>Tic-Tac-Toe</h2>
+        <table id="ttt-board">
+            <tr><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td></tr>
+        </table>
+    `;
+    const cells = document.querySelectorAll('#ttt-board td');
+    let currentPlayer = 'X';
+
+    cells.forEach(cell => {
+        cell.addEventListener('click', function() {
+            if (this.textContent === '') {
+                this.textContent = currentPlayer;
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                checkWinner();
+            }
+        });
+    });
+}
+
+function checkWinner() {
+    const cells = document.querySelectorAll('#ttt-board td');
+    const winPatterns = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // cols
+        [0, 4, 8], [2, 4, 6]             // diagonals
+    ];
+
+    for (let pattern of winPatterns) {
+        const [a, b, c] = pattern;
+        if (cells[a].textContent && cells[a].textContent === cells[b].textContent && cells[a].textContent === cells[c].textContent) {
+            alert(`Player ${cells[a].textContent} wins!`);
+            resetBoard();
+            break;
+        }
+    }
+}
+
+function resetBoard() {
+    const cells = document.querySelectorAll('#ttt-board td');
+    cells.forEach(cell => cell.textContent = '');
+}
+
+// Rock-Paper-Scissors
+function rockPaperScissors() {
+    const choices = ['Rock', 'Paper', 'Scissors'];
+    const userChoice = prompt("Rock, Paper, or Scissors?");
+    const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+
+    if (!userChoice) return;
+
+    let result = '';
+
+    if (userChoice === computerChoice) {
+        result = "It's a draw!";
+    } else if (
+        (userChoice === 'Rock' && computerChoice === 'Scissors') ||
+        (userChoice === 'Paper' && computerChoice === 'Rock') ||
+        (userChoice === 'Scissors' && computerChoice === 'Paper')
+    ) {
+        result = `You win! Computer chose ${computerChoice}.`;
+    } else {
+        result = `You lose! Computer chose ${computerChoice}.`;
+    }
+
+    gameArea.innerHTML = `
+        <h2>Rock-Paper-Scissors</h2>
+        <p>${result}</p>
+        <button onclick="rockPaperScissors()">Play Again</button>
+    `;
+}
+
+// Memory Game
+function memoryGame() {
+    const colors = ['red', 'green', 'blue', 'yellow'];
+    const sequence = [];
+    let userSequence = [];
+    let level = 0;
+
+    function nextLevel() {
+        userSequence = [];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        sequence.push(randomColor);
+        alert(`Sequence: ${sequence.join(', ')}`);
+        level++;
+    }
+
+    function checkSequence() {
+        for (let i = 0; i < userSequence.length; i++) {
+            if (userSequence[i] !== sequence[i]) {
+                alert('Wrong sequence! Game over.');
+                resetGame();
+                return;
+            }
+        }
+
+        if (userSequence.length === sequence.length) {
+            nextLevel();
+        }
+    }
+
+    function resetGame() {
+        sequence.length = 0;
+        userSequence.length = 0;
+        level = 0;
+    }
+
+    gameArea.innerHTML = `
+        <h2>Memory Game</h2>
+        <div id="memory-buttons">
+            ${colors.map(color => `<button onclick="userClick('${color}')">${color}</button>`).join('')}
+        </div>
+    `;
+
+    nextLevel();
+
+    window.userClick = function(color) {
+        userSequence.push(color);
+        checkSequence();
+    };
+}
+
+// Maze Runner (a simple prompt-based version)
+function mazeRunner() {
+    let steps = 0;
+    while (true) {
+        const move = prompt("You're in a maze. Move (left, right, forward)?");
+        steps++;
+        if (move === 'right' && steps >= 5) {
+            alert('Congratulations, you escaped the maze!');
+            break;
+        }
+    }
+
+    gameArea.innerHTML = `
+        <h2>Maze Runner</h2>
+        <p>You escaped in ${steps} moves!</p>
+    `;
+}
+
+// Add event listeners to start the games
+document.getElementById('game1').addEventListener('click', function() {
+    ticTacToe();
+    checkRickRoll();
+});
+
+document.getElementById('game2').addEventListener('click', function() {
+    rockPaperScissors();
+    checkRickRoll();
+});
+
+document.getElementById('game3').addEventListener('click', function() {
+    memoryGame();
+    checkRickRoll();
+});
+
+document.getElementById('game4').addEventListener('click', function() {
+    mazeRunner();
+    checkRickRoll();
+});
+
+// Check if all games have been played, then trigger Rick Roll
+function checkRickRoll() {
+    gameCounter++;
+    if (gameCounter >= 4) {
+        document.body.innerHTML = ''; // Clear all content
+        document.getElementById('rickroll').classList.remove('hidden');
+    }
+}
+let gameCounter = 0;
+
+const gameArea = document.getElementById('game-area');
+const rewardSection = document.getElementById('reward');
+const rewardLink = document.getElementById('reward-link');
+
+// Tic-Tac-Toe
+function ticTacToe() {
+    gameArea.innerHTML = `
+        <h2>Tic-Tac-Toe</h2>
+        <table id="ttt-board">
+            <tr><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td></tr>
+        </table>
+    `;
+    const cells = document.querySelectorAll('#ttt-board td');
+    let currentPlayer = 'X';
+
+    cells.forEach(cell => {
+        cell.addEventListener('click', function() {
+            if (this.textContent === '') {
+                this.textContent = currentPlayer;
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                checkWinner();
+            }
+        });
+    });
+}
+
+function checkWinner() {
+    const cells = document.querySelectorAll('#ttt-board td');
+    const winPatterns = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // cols
+        [0, 4, 8], [2, 4, 6]             // diagonals
+    ];
+
+    for (let pattern of winPatterns) {
+        const [a, b, c] = pattern;
+        if (cells[a].textContent && cells[a].textContent === cells[b].textContent && cells[a].textContent === cells[c].textContent) {
+            alert(`Player ${cells[a].textContent} wins!`);
+            resetBoard();
+            break;
+        }
+    }
+}
+
+function resetBoard() {
+    const cells = document.querySelectorAll('#ttt-board td');
+    cells.forEach(cell => cell.textContent = '');
+}
+
+// Rock-Paper-Scissors
+function rockPaperScissors() {
+    const choices = ['Rock', 'Paper', 'Scissors'];
+    const userChoice = prompt("Rock, Paper, or Scissors?");
+    const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+
+    if (!userChoice) return;
+
+    let result = '';
+
+    if (userChoice === computerChoice) {
+        result = "It's a draw!";
+    } else if (
+        (userChoice === 'Rock' && computerChoice === 'Scissors') ||
+        (userChoice === 'Paper' && computerChoice === 'Rock') ||
+        (userChoice === 'Scissors' && computerChoice === 'Paper')
+    ) {
+        result = `You win! Computer chose ${computerChoice}.`;
+    } else {
+        result = `You lose! Computer chose ${computerChoice}.`;
+    }
+
+    gameArea.innerHTML = `
+        <h2>Rock-Paper-Scissors</h2>
+        <p>${result}</p>
+        <button onclick="rockPaperScissors()">Play Again</button>
+    `;
+}
+
+// Memory Game
+function memoryGame() {
+    const colors = ['red', 'green', 'blue', 'yellow'];
+    const sequence = [];
+    let userSequence = [];
+    let level = 0;
+
+    function nextLevel() {
+        userSequence = [];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        sequence.push(randomColor);
+        alert(`Sequence: ${sequence.join(', ')}`);
+        level++;
+    }
+
+    function checkSequence() {
+        for (let i = 0; i < userSequence.length; i++) {
+            if (userSequence[i] !== sequence[i]) {
+                alert('Wrong sequence! Game over.');
+                resetGame();
+                return;
+            }
+        }
+
+        if (userSequence.length === sequence.length) {
+            nextLevel();
+        }
+    }
+
+    function resetGame() {
+        sequence.length = 0;
+        userSequence.length = 0;
+        level = 0;
+    }
+
+    gameArea.innerHTML = `
+        <h2>Memory Game</h2>
+        <div id="memory-buttons">
+            ${colors.map(color => `<button onclick="userClick('${color}')">${color}</button>`).join('')}
+        </div>
+    `;
+
+    nextLevel();
+
+    window.userClick = function(color) {
+        userSequence.push(color);
+        checkSequence();
+    };
+}
+
+// Maze Runner (simple text-based version)
+function mazeRunner() {
+    let steps = 0;
+    while (true) {
+        const move = prompt("You're in a maze. Move (left, right, forward)?");
+        steps++;
+        if (move === 'right' && steps >= 5) {
+            alert('Congratulations, you escaped the maze!');
+            break;
+        }
+    }
+
+    gameArea.innerHTML = `
+        <h2>Maze Runner</h2>
+        <p>You escaped in ${steps} moves!</p>
+    `;
+}
+
+// Add event listeners to start the games
+document.getElementById('game1').addEventListener('click', function() {
+    ticTacToe();
+    checkRickRoll();
+});
+
+document.getElementById('game2').addEventListener('click', function() {
+    rockPaperScissors();
+    checkRickRoll();
+});
+
+document.getElementById('game3').addEventListener('click', function() {
+    memoryGame();
+    checkRickRoll();
+});
+
+document.getElementById('game4').addEventListener('click', function() {
+    mazeRunner();
+    checkRickRoll();
+});
+
+// Check if all games have been played, then lead to the "reward"
+function checkRickRoll() {
+    gameCounter++;
+    if (gameCounter >= 4) {
+        gameArea.classList.add('hidden');
+        rewardSection.classList.remove('hidden');
+        rewardLink.setAttribute('href', 'https://rickroll.it/rickroll.mp4'); // The hidden Rick Roll link
+    }
+}
